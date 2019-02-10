@@ -491,330 +491,45 @@ class sd1_lib(object):
     def DAQtriggerMultiple(self, DAQmask) :
         return self._sd_dio.DAQtriggerMultiple(DAQmask)
 
-class SD_AIN_TriggerMode :
-	RISING_EDGE = 1;
-	FALLING_EDGE = 2;
-	BOTH_EDGES = 3;
-
-class SD_AIN_SyncTriggerBehaviours :
-	TRIGGER_HIGH_SYNC = SD_TriggerBehaviors.TRIGGER_HIGH + 8;
-	TRIGGER_LOW_SYNC = SD_TriggerBehaviors.TRIGGER_LOW + 8;
-	TRIGGER_RISE_SYNC = SD_TriggerBehaviors.TRIGGER_RISE + 8;
-	TRIGGER_FALL_SYNC = SD_TriggerBehaviors.TRIGGER_FALL + 8;
-
-class AIN_Coupling :
-	AIN_COUPLING_DC = 0;
-	AIN_COUPLING_AC = 1;
-
-class AIN_Impedance :
-	AIN_IMPEDANCE_HZ = 0;
-	AIN_IMPEDANCE_50 = 1;
-
-class SD_AIN(SD_Module) :
+    #SD_AIN Functions
 	def channelInputConfig(self, channel, fullScale, impedance, coupling) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_channelInputConfig(self._SD_Object__handle, channel, c_double(fullScale), impedance, coupling);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def channelPrescalerConfig(self, channel, prescaler) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_channelPrescalerConfig(self._SD_Object__handle, channel, prescaler);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def channelPrescalerConfigMultiple(self, mask, prescaler) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_channelPrescalerConfigMultiple(self._SD_Object__handle, mask, prescaler);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def channelPrescaler(self, channel) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_channelPrescaler(self._SD_Object__handle, channel);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def channelFullScale(self, channel) :
-		if self._SD_Object__handle > 0 :
-			self._SD_Object__core_dll.SD_AIN_channelFullScale.restype = c_double;
-			result = self._SD_Object__core_dll.SD_AIN_channelFullScale(self._SD_Object__handle, channel);
-
-			if result < 0 :
-				return int(result);
-			else :
-				return result;
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def channelMinFullScale(self, impedance, coupling) :
-		if self._SD_Object__handle > 0 :
-			self._SD_Object__core_dll.SD_AIN_channelMinFullScale.restype = c_double;
-			result = self._SD_Object__core_dll.SD_AIN_channelMinFullScale(self._SD_Object__handle, impedance, coupling);
-
-			if result < 0 :
-				return int(result);
-			else :
-				return result;
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def channelMaxFullScale(self, impedance, coupling) :
-		if self._SD_Object__handle > 0 :
-			self._SD_Object__core_dll.SD_AIN_channelMaxFullScale.restype = c_double;
-			result = self._SD_Object__core_dll.SD_AIN_channelMaxFullScale(self._SD_Object__handle, impedance, coupling);
-
-			if result < 0 :
-				return int(result);
-			else :
-				return result;
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def channelImpedance(self, channel) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_channelImpedance(self._SD_Object__handle, channel);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def channelCoupling(self, channel) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_channelCoupling(self._SD_Object__handle, channel);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def channelTriggerConfig(self, channel, analogTriggerMode, threshold) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_channelTriggerConfig(self._SD_Object__handle, channel, analogTriggerMode, c_double(threshold));
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def clockIOconfig(self, clockConfig) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_clockIOconfig(self._SD_Object__handle, clockConfig);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def clockGetFrequency(self) :
-		if self._SD_Object__handle > 0 :
-			self._SD_Object__core_dll.SD_AIN_clockGetFrequency.restype = c_double;
-			result = self._SD_Object__core_dll.SD_AIN_clockGetFrequency(self._SD_Object__handle);
-
-			if result < 0 :
-				return int(result);
-			else :
-				return result;
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def clockGetSyncFrequency(self) :
-		if self._SD_Object__handle > 0 :
-			self._SD_Object__core_dll.SD_AIN_clockGetSyncFrequency.restype = c_double;
-			result = self._SD_Object__core_dll.SD_AIN_clockGetSyncFrequency(self._SD_Object__handle);
-
-			if result < 0 :
-				return int(result);
-			else :
-				return result;
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def clockSetFrequency(self, frequency, mode = 1) :
-		if self._SD_Object__handle > 0 :
-			self._SD_Object__core_dll.SD_AIN_clockSetFrequency.restype = c_double;
-			result = self._SD_Object__core_dll.SD_AIN_clockSetFrequency(self._SD_Object__handle, c_double(frequency), mode);
-
-			if result < 0 :
-				return int(result);
-			else :
-				return result;
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def clockResetPhase(self, triggerBehavior, PXItrigger, skew = 0.0) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_clockResetPhase(self._SD_Object__handle, triggerBehavior, PXItrigger, c_double(skew));
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def triggerIOconfig(self, direction) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_triggerIOconfig(self._SD_Object__handle, direction);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def triggerIOwrite(self, value, syncMode = 1) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_triggerIOwrite(self._SD_Object__handle, value, syncMode);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def triggerIOread(self) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_triggerIOread(self._SD_Object__handle);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQconfig(self, channel, pointsPerCycle, nCycles, triggerDelay, triggerMode) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQconfig(self._SD_Object__handle, channel, pointsPerCycle, nCycles, triggerDelay, triggerMode);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQtriggerConfig(self, channel, digitalTriggerMode, digitalTriggerSource, analogTriggerMask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQtriggerConfig(self._SD_Object__handle, channel, digitalTriggerMode, digitalTriggerSource, analogTriggerMask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQanalogTriggerConfig(self, channel, analogTriggerMask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQanalogTriggerConfig(self._SD_Object__handle, channel, analogTriggerMask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQdigitalTriggerConfig(self, channel, triggerSource, triggerBehavior) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQdigitalTriggerConfig(self._SD_Object__handle, channel, triggerSource, triggerBehavior);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQtriggerExternalConfig(self, nDAQ, externalSource, triggerBehavior, sync = SD_SyncModes.SYNC_NONE) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQtriggerExternalConfig(self._SD_Object__handle, nDAQ, externalSource, triggerBehavior, sync);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQstart(self, channel) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQstart(self._SD_Object__handle, channel);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQstop(self, channel) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQstop(self._SD_Object__handle, channel);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQflush(self, channel) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQflush(self._SD_Object__handle, channel);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQtrigger(self, channel) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQtrigger(self._SD_Object__handle, channel);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQstartMultiple(self, channel) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQstartMultiple(self._SD_Object__handle, channel);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQstopMultiple(self, channel) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQstopMultiple(self._SD_Object__handle, channel);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQflushMultiple(self, channel) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQflushMultiple(self._SD_Object__handle, channel);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQtriggerMultiple(self, channel) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQtriggerMultiple(self._SD_Object__handle, channel);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQread(self, nDAQ, nPoints, timeOut = 0) :
-		if self._SD_Object__handle > 0 :
-			if nPoints > 0 :
-				data = (c_short * nPoints)()
-
-				nPoints = self._SD_Object__core_dll.SD_AIN_DAQread(self._SD_Object__handle, nDAQ, data, nPoints, timeOut)
-
-				if nPoints > 0 :
-					return np.array(data)
-				else :
-					return np.empty(0, dtype=np.short)
-			else :
-				return const.error.INVALID_VALUE
-		else :
-			return const.error.MODULE_NOT_OPENED
-
 	def DAQcounterRead(self, nDAQ) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQcounterRead(self._SD_Object__handle, nDAQ);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQbufferPoolConfig(self, nDAQ, nPoints, timeOut = 0):
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQbufferPoolConfig(self._SD_Object__handle, nDAQ, c_void_p(0), nPoints, timeOut, c_void_p(0), c_void_p(0));
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQbufferPoolRelease(self, nDAQ):
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_AIN_DAQbufferPoolRelease(self._SD_Object__handle, nDAQ);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
 	def DAQbufferGet(self, nDAQ):
-		if self._SD_Object__handle > 0 :
-			self._SD_Object__core_dll.SD_AIN_DAQbufferGet.restype = POINTER(c_short)
-			error = c_int32()
-			readPoints = c_int32()
-			data = self._SD_Object__core_dll.SD_AIN_DAQbufferGet(self._SD_Object__handle, nDAQ, byref(readPoints), byref(error))
-			error = error.value
-
-			if error < 0 :
-				return error
-			else :
-				nPoints = readPoints.value
-
-				if nPoints > 0 :
-					return  np.array(data)
-				else :
-					return np.empty(0, dtype=np.short)
-		else :
-			return const.error.MODULE_NOT_OPENED
-
 	def FFT(self, channel, data, dB = False, windowType = 0) :
-		error = const.error.INVALID_PARAMETERS
-
-		if self._SD_Object__handle > 0 :
-			if data is not None :
-				size = len(data)
-
-				if size > 0 :
-					resultSize = int(ceil(pow(2, ceil(log(size, 2)))/2))
-					dataC = (c_short * size)(*data)
-					moduleC = (c_double * resultSize)()
-					phaseC = (c_double * resultSize)()
-
-					resultSize = self._SD_Object__core_dll.SD_AIN_FFT(self._SD_Object__handle, channel, dataC, size, moduleC, resultSize, phaseC, dB, windowType)
-
-					if resultSize > 0 :
-						moduleData = np.array(moduleC)
-						phaseData = np.array(phaseC)
-					else :
-						moduleData = np.empty(0, dtype=np.double)
-						phaseData = np.empty(0, dtype=np.double)
-
-					return (moduleData, phaseData)
-		else :
-			error = const.error.MODULE_NOT_OPENED
-
-		return error
-
+	
 class SD_HVI(SD_Object) :
 	def isOpen(self) :
 		return (self._SD_Object__handle > 0);
@@ -1041,3 +756,23 @@ class SD_HVI(SD_Object) :
 			return self._SD_Object__core_dll.SD_HVI_writeDoubleConstantWithUserName(self._SD_Object__handle, moduleUserName.encode(), constantName.encode(), c_double(value), unit.encode());
 		else :
 			return const.error.HVI_NOT_OPENED;
+
+class SD_AIN_TriggerMode :
+	RISING_EDGE = 1;
+	FALLING_EDGE = 2;
+	BOTH_EDGES = 3;
+
+class SD_AIN_SyncTriggerBehaviours :
+	TRIGGER_HIGH_SYNC = SD_TriggerBehaviors.TRIGGER_HIGH + 8;
+	TRIGGER_LOW_SYNC = SD_TriggerBehaviors.TRIGGER_LOW + 8;
+	TRIGGER_RISE_SYNC = SD_TriggerBehaviors.TRIGGER_RISE + 8;
+	TRIGGER_FALL_SYNC = SD_TriggerBehaviors.TRIGGER_FALL + 8;
+
+class AIN_Coupling :
+	AIN_COUPLING_DC = 0;
+	AIN_COUPLING_AC = 1;
+
+class AIN_Impedance :
+	AIN_IMPEDANCE_HZ = 0;
+	AIN_IMPEDANCE_50 = 1;
+
