@@ -12,6 +12,7 @@ class sd1_lib(object):
         self._sd_wave = SD_Wave()
         self._sd_module = SD_Module()
         self._sd_aou = SD_AOU()
+        self._sd_dio = SD_DIO()
     
     def newFromFile(self, waveform_file):
         return self._sd_wave.newFromFile(waveform_file)
@@ -324,365 +325,113 @@ class sd1_lib(object):
     
     def AWGqueueSyncMode(self, nAWG, syncMode) :
         return self._sd_aou.AWGqueueSyncMode(nAWG, syncMode)
-
-class SD_DIO(SD_Module) :
-	##Config
-	def IOstandardConfig(self, portSector, logicStandard) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_IOstandardConfig(self._SD_Object__handle, portSector, logicStandard);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def IOdirectionConfig(self, lineMask, direction) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_IOdirectionConfig(self._SD_Object__handle, c_longlong(lineMask), direction);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	##Ports
-	def portWrite(self, nPort, portValue) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_portWrite(self._SD_Object__handle, nPort, c_longlong(portValue));
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def portWriteWithMask(self, nPort, portValue, lineMask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_portWriteWithMask(self._SD_Object__handle, nPort, c_longlong(portValue), c_longlong(lineMask));
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def portRead(self, nPort) :
-		value = c_longlong(0);
-		error = c_int(const.error.MODULE_NOT_OPENED);
-
-		if self._SD_Object__handle > 0 :
-			self._SD_Object__core_dll.SD_DIO_portRead.restype = c_longlong;
-			value = self._SD_Object__core_dll.SD_DIO_portRead(self._SD_Object__handle, nPort, byref(error));
-
-		return (value.value, error.value);
-
-	##Buses
-	def busConfig(self, nBus, nPort, StartBit, EndBit):
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_busConfig(self._SD_Object__handle, nBus, nPort, StartBit, EndBit);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def busWrite(self, nBus, busValue) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_busWrite(self._SD_Object__handle, nBus, busValue);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def busRead(self, nBus) :
-		error = c_int(const.error.MODULE_NOT_OPENED);
-		value = 0;
-
-		if self._SD_Object__handle > 0 :
-			value = self._SD_Object__core_dll.SD_DIO_busRead(self._SD_Object__handle, nBus, byref(error));
-
-		return (value, error.value);
-
-	def busSamplingConfig(self, nBus, switchStrobe, strobeOn, strobeType, strobeDelay, prescaler = 0, debouncing = 0) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_busSamplingConfig(self._SD_Object__handle, nBus, switchStrobe, strobeOn, strobeType, c_float(strobeDelay), prescaler, debouncing);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	##Digital Lines
-	def lineWrite(self, nPort, nLine, lineValue) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_lineWrite(self._SD_Object__handle, nPort, nLine, lineValue);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def lineRead(self, nPort, nLine) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_lineRead(self._SD_Object__handle, nPort, nLine);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	##DWG
-	def waveformGetAddress(self, waveformNumber) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_waveformGetAddress(self._SD_Object__handle, waveformNumber);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def waveformGetMemorySize(self, waveformNumber) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_waveformGetMemorySize(self._SD_Object__handle, waveformNumber);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def waveformMemoryGetWriteAddress(self) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_waveformMemoryGetWriteAddress(self._SD_Object__handle);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def waveformMemorySetWriteAddress(self, writeAddress) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_waveformMemorySetWriteAddress(self._SD_Object__handle, writeAddress);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def waveformReLoad(self, waveformObject, waveformNumber, paddingMode = 0) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_waveformReLoad(self._SD_Object__handle, waveformObject._SD_Object__handle, waveformNumber, paddingMode);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def waveformReLoadArrayInt16(self, waveformType, dataRaw, waveformNumber, paddingMode = 0) :
-		if self._SD_Object__handle > 0 :
-			if len(dataRaw) > 0 :
-				dataC = (c_short * len(dataRaw))(*dataRaw);
-				return self._SD_Object__core_dll.SD_DIO_waveformReLoadArrayInt16(self._SD_Object__handle, waveformType, dataC._length_, dataC, waveformNumber, paddingMode);
-			else :
-				return const.error.INVALID_VALUE;
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def waveformLoad(self, waveformObject, waveformNumber, paddingMode = 0) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_waveformLoad(self._SD_Object__handle, waveformObject._SD_Object__handle, waveformNumber, paddingMode);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def waveformLoadArrayInt16(self, waveformType, dataRaw, waveformNumber, paddingMode = 0) :
-		if self._SD_Object__handle > 0 :
-			if len(dataRaw) > 0 :
-				dataC = (c_short * len(dataRaw))(*dataRaw);
-				return self._SD_Object__core_dll.SD_DIO_waveformLoadArrayInt16(self._SD_Object__handle, waveformType, dataC._length_, dataC, waveformNumber, paddingMode);
-			else :
-				return const.error.INVALID_VALUE;
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def waveformFlush(self) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_waveformFlush(self._SD_Object__handle);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGqueueWaveform(self, nDWG, waveformNumber, triggerMode, startDelay, cycles, prescaler) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGqueueWaveform(self._SD_Object__handle, nDWG, waveformNumber, triggerMode, startDelay, cycles, prescaler);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGstart(self, nDWG) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGstart(self._SD_Object__handle, nDWG);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGstop(self, nDWG) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGstop(self._SD_Object__handle, nDWG);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGresume(self, nDWG) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGresume(self._SD_Object__handle, nDWG);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGpause(self, nDWG) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGpause(self._SD_Object__handle, nDWG);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGtrigger(self, nDWG) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGtrigger(self._SD_Object__handle, nDWG);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGstartMultiple(self, DWGmask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGstartMultiple(self._SD_Object__handle, DWGmask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGstopMultiple(self, DWGmask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGstopMultiple(self._SD_Object__handle, DWGmask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGresumeMultiple(self, DWGmask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGresumeMultiple(self._SD_Object__handle, DWGmask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGpauseMultiple(self, DWGmask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGpauseMultiple(self._SD_Object__handle, DWGmask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGtriggerMultiple(self, DWGmask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGtriggerMultiple(self._SD_Object__handle, DWGmask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGflush(self, nDWG) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGflush(self._SD_Object__handle, nDWG);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGisRunning(self, nDWG) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGisRunning(self._SD_Object__handle, nDWG);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGnWFplaying(self, nDWG) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGnWFplaying(self._SD_Object__handle, nDWG);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWGfromFile(self, nDWG, waveformFile, triggerMode, startDelay, cycles, prescaler, paddingMode = 0) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGfromFile(self._SD_Object__handle, nDWG, waveformFile.encode(), triggerMode, startDelay, cycles, prescaler, paddingMode);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DWG(self, nDWG, triggerMode, startDelay, cycles, prescaler, waveformType, waveformDataA, waveformDataB = None, paddingMode = 0) :
-		if self._SD_Object__handle > 0 :
-			if len(waveformDataA) > 0 and (waveformDataB is None or len(waveformDataA) == len(waveformDataB)) :
-				waveform_dataA_C = (c_int * len(waveformDataA))(*waveformDataA);
-
-				if waveformDataB is None:
-					waveform_dataB_C = c_void_p(0);
-				else :
-					waveform_dataB_C = (c_int * len(waveformDataB))(*waveformDataB);
-
-				return self._SD_Object__core_dll.SD_DIO_DWGfromArray(self._SD_Object__handle, nDWG, triggerMode, startDelay, cycles, prescaler, waveformType, waveform_dataA_C._length_, waveform_dataA_C, waveform_dataB_C, paddingMode)
-			else :
-				return const.error.INVALID_VALUE
-		else :
-			return const.error.MODULE_NOT_OPENED
-
-	def DWGtriggerExternalConfig(self, nDWG, externalSource, triggerBehavior) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DWGtriggerExternalConfig(self._SD_Object__handle, nDWG, externalSource, triggerBehavior);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQread(self, nDAQ, nPoints, timeOut = 0) :
-		if self._SD_Object__handle > 0 :
-			if nPoints > 0 :
-				data = (c_short * nPoints)()
-
-				nPoints = self._SD_Object__core_dll.SD_DIO_DAQread(self._SD_Object__handle, nDAQ, data, nPoints, timeOut)
-
-				if nPoints > 0 :
-					return np.array(data)
-				else :
-					return np.empty(0, dtype=np.short)
-			else :
-				return const.error.INVALID_VALUE
-		else :
-			return const.error.MODULE_NOT_OPENED
-
-	def DAQconfig(self, nDAQ, nDAQpointsPerCycle, nCycles, prescaler, triggerMode) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQconfig(self._SD_Object__handle, nDAQ, nDAQpointsPerCycle, nCycles, prescaler, triggerMode);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQtriggerExternalConfig(self, nDAQ, externalSource, triggerBehavior) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQtriggerExternalConfig(self._SD_Object__handle, nDAQ, externalSource, triggerBehavior);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQcounterRead(self, nDAQ) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQcounterRead(self._SD_Object__handle, nDAQ);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQstart(self, nDAQ) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQstart(self._SD_Object__handle, nDAQ);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQpause(self, nDAQ) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQpause(self._SD_Object__handle, nDAQ);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQresume(self, nDAQ) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQresume(self._SD_Object__handle, nDAQ);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQflush(self, nDAQ) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQflush(self._SD_Object__handle, nDAQ);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQstop(self, nDAQ) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQstop(self._SD_Object__handle, nDAQ);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQtrigger(self, nDAQ) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQtrigger(self._SD_Object__handle, nDAQ);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQstartMultiple(self, DAQmask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQstartMultiple(self._SD_Object__handle, DAQmask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQpauseMultiple(self, DAQmask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQpauseMultiple(self._SD_Object__handle, DAQmask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQresumeMultiple(self, DAQmask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQresumeMultiple(self._SD_Object__handle, DAQmask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQflushMultiple(self, DAQmask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQflushMultiple(self._SD_Object__handle, DAQmask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQstopMultiple(self, DAQmask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQstopMultiple(self._SD_Object__handle, DAQmask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
-
-	def DAQtriggerMultiple(self, DAQmask) :
-		if self._SD_Object__handle > 0 :
-			return self._SD_Object__core_dll.SD_DIO_DAQtriggerMultiple(self._SD_Object__handle, DAQmask);
-		else :
-			return const.error.MODULE_NOT_OPENED;
+    
+    #DIO Functions
+    ##Config
+    def IOstandardConfig(self, portSector, logicStandard) :
+        return self._sd_dio.IOstandardConfig(portSector, logicStandard)
+    
+    def IOdirectionConfig(self, lineMask, direction) :
+        return self._sd_dio.IOdirectionConfig(lineMask, direction)
+    
+    ##Ports
+    def portWrite(self, nPort, portValue) :
+        return self._sd_dio.portWrite(nPort, portValue)
+    
+    def portWriteWithMask(self, nPort, portValue, lineMask) :
+        return self._sd_dio.portWriteWithMask(nPort, portValue, lineMask)
+    
+    def portRead(self, nPort) :
+        return self._sd_dio.portRead(nPort)
+    
+    ##Buses
+    def busConfig(self, nBus, nPort, StartBit, EndBit):
+        return self._sd_dio.busConfig(nBus, nPort, StartBit, EndBit)
+    
+    def busWrite(self, nBus, busValue) :
+        return self._sd_dio.busWrite(nBus, busValue)
+    
+    def busRead(self, nBus) :
+        return self._sd_dio.busRead(nBus)
+    
+    def busSamplingConfig(self, nBus, switchStrobe, strobeOn, strobeType, strobeDelay, prescaler = 0, debouncing = 0) :
+        return self._sd_dio.busSamplingConfig(nBus, switchStrobe, strobeOn, strobeType, strobeDelay, prescaler = 0, debouncing = 0)
+    
+    ##Digital Lines
+    def lineWrite(self, nPort, nLine, lineValue) :
+        return self._sd_dio.lineWrite(nPort, nLine, lineValue)
+    
+    def lineRead(self, nPort, nLine) :
+        return self._sd_dio.lineRead(nPort, nLine)
+    
+    ##DWG
+    def waveformGetAddress(self, waveformNumber) :
+        return self._sd_dio.waveformGetAddress(waveformNumber)
+    
+    def waveformGetMemorySize(self, waveformNumber) :
+        return self._sd_dio.waveformGetMemorySize(waveformNumber)
+    
+    def waveformMemoryGetWriteAddress(self) :
+        return self._sd_dio.waveformMemoryGetWriteAddress()
+    
+    def waveformMemorySetWriteAddress(self, writeAddress) :
+        return self._sd_dio.waveformMemorySetWriteAddress(writeAddress)
+    
+    def waveformReLoad(self, waveformObject, waveformNumber, paddingMode = 0) :
+        return self._sd_dio.waveformReLoad(waveformObject, waveformNumber, paddingMode) 
+    
+    def waveformReLoadArrayInt16(self, waveformType, dataRaw, waveformNumber, paddingMode = 0) :
+        return self._sd_dio.
+    def waveformLoad(self, waveformObject, waveformNumber, paddingMode = 0) :
+        return self._sd_dio.
+    def waveformLoadArrayInt16(self, waveformType, dataRaw, waveformNumber, paddingMode = 0) :
+        return self._sd_dio.
+    def waveformFlush(self) :
+        return self._sd_dio.
+    def DWGqueueWaveform(self, nDWG, waveformNumber, triggerMode, startDelay, cycles, prescaler) :
+        return self._sd_dio.
+    def DWGstart(self, nDWG) :
+        return self._sd_dio.
+    def DWGstop(self, nDWG) :
+        return self._sd_dio.
+    def DWGresume(self, nDWG) :
+        return self._sd_dio.
+    def DWGpause(self, nDWG) :
+        return self._sd_dio.
+    def DWGtrigger(self, nDWG) :
+        return self._sd_dio.
+    def DWGstartMultiple(self, DWGmask) :
+        return self._sd_dio.
+    def DWGstopMultiple(self, DWGmask) :
+        return self._sd_dio.
+    def DWGresumeMultiple(self, DWGmask) :
+        return self._sd_dio.
+    def DWGpauseMultiple(self, DWGmask) :
+        return self._sd_dio.
+    def DWGtriggerMultiple(self, DWGmask) :
+        return self._sd_dio.
+    def DWGflush(self, nDWG) :
+    def DWGisRunning(self, nDWG) :
+    def DWGnWFplaying(self, nDWG) :
+    def DWGfromFile(self, nDWG, waveformFile, triggerMode, startDelay, cycles, prescaler, paddingMode = 0) :
+    def DWG(self, nDWG, triggerMode, startDelay, cycles, prescaler, waveformType, waveformDataA, waveformDataB = None, paddingMode = 0) :
+    def DWGtriggerExternalConfig(self, nDWG, externalSource, triggerBehavior) :
+    def DAQread(self, nDAQ, nPoints, timeOut = 0) :
+    def DAQconfig(self, nDAQ, nDAQpointsPerCycle, nCycles, prescaler, triggerMode) :
+    def DAQtriggerExternalConfig(self, nDAQ, externalSource, triggerBehavior) :
+    def DAQcounterRead(self, nDAQ) :
+    def DAQstart(self, nDAQ) :
+    def DAQpause(self, nDAQ) :
+    def DAQresume(self, nDAQ) :
+    def DAQflush(self, nDAQ) :
+    def DAQstop(self, nDAQ) :
+    def DAQtrigger(self, nDAQ) :
+    def DAQstartMultiple(self, DAQmask) :
+    def DAQpauseMultiple(self, DAQmask) :
+    def DAQresumeMultiple(self, DAQmask) :
+    def DAQflushMultiple(self, DAQmask) :
+    def DAQstopMultiple(self, DAQmask) :
+    def DAQtriggerMultiple(self, DAQmask) :
 
 class SD_AIN_TriggerMode :
 	RISING_EDGE = 1;
