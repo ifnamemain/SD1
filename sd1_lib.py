@@ -381,57 +381,115 @@ class sd1_lib(object):
         return self._sd_dio.waveformReLoad(waveformObject, waveformNumber, paddingMode) 
     
     def waveformReLoadArrayInt16(self, waveformType, dataRaw, waveformNumber, paddingMode = 0) :
-        return self._sd_dio.
+        return self._sd_dio.waveformReLoadArrayInt16(waveformType, dataRaw, waveformNumber, paddingMode) 
+    
     def waveformLoad(self, waveformObject, waveformNumber, paddingMode = 0) :
-        return self._sd_dio.
+        return self._sd_dio.waveformLoad(waveformObject, waveformNumber, paddingMode) 
+    
     def waveformLoadArrayInt16(self, waveformType, dataRaw, waveformNumber, paddingMode = 0) :
-        return self._sd_dio.
+        return self._sd_dio.waveformLoadArrayInt16(waveformType, dataRaw, waveformNumber, paddingMode) 
+    
     def waveformFlush(self) :
-        return self._sd_dio.
+        return self._sd_dio.waveformFlush() 
+    
     def DWGqueueWaveform(self, nDWG, waveformNumber, triggerMode, startDelay, cycles, prescaler) :
-        return self._sd_dio.
+        return self._sd_dio.DWGqueueWaveform(nDWG, waveformNumber, triggerMode, startDelay, cycles, prescaler) 
+    
     def DWGstart(self, nDWG) :
-        return self._sd_dio.
+        return self._sd_dio.DWGstart(nDWG)
+    
     def DWGstop(self, nDWG) :
-        return self._sd_dio.
+        return self._sd_dio.DWGstop(nDWG) 
+    
     def DWGresume(self, nDWG) :
-        return self._sd_dio.
+        return self._sd_dio.DWGresume(nDWG) 
+    
     def DWGpause(self, nDWG) :
-        return self._sd_dio.
+        return self._sd_dio.DWGpause(nDWG) 
+    
     def DWGtrigger(self, nDWG) :
-        return self._sd_dio.
+        return self._sd_dio.DWGtrigger(nDWG)
+    
     def DWGstartMultiple(self, DWGmask) :
-        return self._sd_dio.
+        return self._sd_dio.DWGstartMultiple(DWGmask)
+    
     def DWGstopMultiple(self, DWGmask) :
-        return self._sd_dio.
+        return self._sd_dio.DWGstopMultiple(DWGmask)
+    
     def DWGresumeMultiple(self, DWGmask) :
-        return self._sd_dio.
+        return self._sd_dio.DWGresumeMultiple(DWGmask)
+    
     def DWGpauseMultiple(self, DWGmask) :
-        return self._sd_dio.
+        return self._sd_dio.DWGpauseMultiple(DWGmask) 
+    
     def DWGtriggerMultiple(self, DWGmask) :
-        return self._sd_dio.
+        return self._sd_dio.DWGtriggerMultiple(DWGmask)
+    
     def DWGflush(self, nDWG) :
+        return self._sd_dio.DWGflush(nDWG)
+    
     def DWGisRunning(self, nDWG) :
+        return self._sd_dio.DWGisRunning(nDWG)
+    
     def DWGnWFplaying(self, nDWG) :
+        return self._sd_dio.DWGnWFplaying(nDWG)
+    
     def DWGfromFile(self, nDWG, waveformFile, triggerMode, startDelay, cycles, prescaler, paddingMode = 0) :
+        return self._sd_dio.DWGfromFile(nDWG, waveformFile, triggerMode, startDelay, cycles, prescaler, paddingMode)
+    
     def DWG(self, nDWG, triggerMode, startDelay, cycles, prescaler, waveformType, waveformDataA, waveformDataB = None, paddingMode = 0) :
+        return self._sd_dio.DWG(nDWG, triggerMode, startDelay, cycles, prescaler, waveformType, waveformDataA, waveformDataB = None, paddingMode)
+    
     def DWGtriggerExternalConfig(self, nDWG, externalSource, triggerBehavior) :
+        return self._sd_dio.DWGtriggerExternalConfig(nDWG, externalSource, triggerBehavior)
+    
     def DAQread(self, nDAQ, nPoints, timeOut = 0) :
+        return self._sd_dio.DAQread(nDAQ, nPoints, timeOut)
+    
     def DAQconfig(self, nDAQ, nDAQpointsPerCycle, nCycles, prescaler, triggerMode) :
+        return self._sd_dio.DAQconfig(nDAQ, nDAQpointsPerCycle, nCycles, prescaler, triggerMode)
+    
     def DAQtriggerExternalConfig(self, nDAQ, externalSource, triggerBehavior) :
+        return self._sd_dio.DAQtriggerExternalConfig(nDAQ, externalSource, triggerBehavior)
+    
     def DAQcounterRead(self, nDAQ) :
+        return self._sd_dio.DAQcounterRead(nDAQ)
+    
     def DAQstart(self, nDAQ) :
+        return self._sd_dio.DAQstart(nDAQ)
+    
     def DAQpause(self, nDAQ) :
+        return self._sd_dio.DAQpause(nDAQ)
+    
     def DAQresume(self, nDAQ) :
+        return self._sd_dio.DAQresume(nDAQ)
+    
     def DAQflush(self, nDAQ) :
+        return self._sd_dio.DAQflush(nDAQ)
+    
     def DAQstop(self, nDAQ) :
+        return self._sd_dio.DAQstop(nDAQ)
+    
     def DAQtrigger(self, nDAQ) :
+        return self._sd_dio.DAQtrigger(nDAQ)
+    
     def DAQstartMultiple(self, DAQmask) :
+        return self._sd_dio.DAQstartMultiple(DAQmask)
+    
     def DAQpauseMultiple(self, DAQmask) :
+        return self._sd_dio.DAQpauseMultiple(DAQmask)
+    
     def DAQresumeMultiple(self, DAQmask) :
+        return self._sd_dio.DAQresumeMultiple(DAQmask)
+    
     def DAQflushMultiple(self, DAQmask) :
+        return self._sd_dio.DAQflushMultiple(DAQmask)
+    
     def DAQstopMultiple(self, DAQmask) :
+        return self._sd_dio.DAQstopMultiple(DAQmask)
+    
     def DAQtriggerMultiple(self, DAQmask) :
+        return self._sd_dio.DAQtriggerMultiple(DAQmask)
 
 class SD_AIN_TriggerMode :
 	RISING_EDGE = 1;
